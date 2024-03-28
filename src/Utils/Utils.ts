@@ -1,18 +1,20 @@
 import path from "path";
 import fs from "fs";
+import { Post, User } from "../Types/types";
 
-// const meses = {
-//   1: "enero",
-// };
+const meses: { [key: number]: string } = {
+  1: "enero",
+  2: "febrero",
+};
 
-// const genertaDate = (): string => {
-//   const date = new Date();
-//   const anio = date.getFullYear();
-//   const month = date.getMonth() + 1;
-//   const day = date.getDay();
-//   const mes = meses[month];
-//   return `${mes} ${day}, ${anio}`;
-// };
+const genertaDate = (): string => {
+  const date = new Date();
+  const anio = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDay();
+  const mes = meses[month];
+  return `${mes} ${day}, ${anio}`;
+};
 
 const getRootDir = () => {
   const rootDirDev = path.resolve(__dirname, "..", "..");
@@ -30,4 +32,15 @@ const getDataConvert = (ruta: string) => {
   return JSON.parse(data);
 };
 
-export { getRootDir, getDataConvert };
+const getVerifyExistsData = async (id: string, ruta: string) => {
+  const getData = await getDataConvert(ruta);
+  const verifyFilterPostById = getData.filter(
+    (item: Post | User) => item.id === id
+  );
+  if (verifyFilterPostById.length === 0) {
+    throw new Error("Data not found");
+  }
+  return verifyFilterPostById;
+};
+
+export { genertaDate, getRootDir, getDataConvert, getVerifyExistsData };

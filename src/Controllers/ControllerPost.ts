@@ -1,7 +1,11 @@
 import path from "path";
 import fs from "fs";
 import { Request, Response } from "express";
-import { getDataConvert, getRootDir } from "../Utils/Utils";
+import {
+  getDataConvert,
+  getRootDir,
+  getVerifyExistsData,
+} from "../Utils/Utils";
 import { Post } from "../Types/types";
 import { v4 as uuidv4 } from "uuid";
 import { sendErrors } from "../Err/Errors";
@@ -10,17 +14,6 @@ const getPath = () => {
   const rootDir = getRootDir();
   const pathJson = path.join(rootDir, "db", "data.json");
   return pathJson;
-};
-
-const getVerifyExistsPost = async (id: string) => {
-  const getDataPost: Post[] = await getDataConvert(getPath());
-  const verifyFilterPostById: Post[] = getDataPost.filter(
-    (item) => item.id === id
-  );
-  if (verifyFilterPostById.length === 0) {
-    throw "Post not found";
-  }
-  return verifyFilterPostById;
 };
 
 const getPost = async (_req: Request, res: Response) => {
@@ -32,17 +25,25 @@ const getPost = async (_req: Request, res: Response) => {
     const getPostData: Post[] = await getDataConvert(getPath());
     res.status(202).json(getPostData);
   } catch (error) {
-    res.status(501).json({ msg: "ocurrio un error" });
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
   }
 };
 
 const getPostById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const filterPostById: Post[] = await getVerifyExistsPost(id);
+    const filterPostById: Post[] = await getVerifyExistsData(id, getPath());
     res.status(200).json(filterPostById);
   } catch (error) {
-    res.status(501).json({ msg: "ocurrio un error" });
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
   }
 };
 
@@ -57,7 +58,11 @@ const postPost = async (req: Request, res: Response) => {
     fs.writeFileSync(getPath(), JSON.stringify(getDataPost, null, 2));
     res.status(201).json({ msg: "Post created" });
   } catch (error) {
-    res.status(501).json({ msg: "ocurrio un error" });
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
   }
 };
 
@@ -65,14 +70,18 @@ const updatePost = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const getDataPost: Post[] = await getDataConvert(getPath());
-    await getVerifyExistsPost(id);
+    await getVerifyExistsData(id, getPath());
     const updatedPostById = getDataPost.map((item) =>
       item.id === id ? { ...item, ...req.body } : item
     );
     fs.writeFileSync(getPath(), JSON.stringify(updatedPostById, null, 2));
     res.status(200).json({ msg: "Post updated" });
   } catch (error) {
-    res.status(501).json({ msg: "ocurrio un error" });
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
   }
 };
 
@@ -80,12 +89,16 @@ const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const getDataPost: Post[] = await getDataConvert(getPath());
-    await getVerifyExistsPost(id);
+    await getVerifyExistsData(id, getPath());
     const newDataPost: Post[] = getDataPost.filter((item) => item.id !== id);
     fs.writeFileSync(getPath(), JSON.stringify(newDataPost, null, 2));
     res.status(200).json({ msg: "Post deleted" });
   } catch (error) {
-    sendErrors(res, error.message, 501);
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
   }
 };
 

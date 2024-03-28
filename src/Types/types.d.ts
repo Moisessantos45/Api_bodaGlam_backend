@@ -9,4 +9,14 @@ interface Post {
   idUser: string;
 }
 
-export { Post };
+interface User {
+  id: string;
+  nameUser: string;
+  email: string;
+  password: string;
+  avatar: string;
+  token: string;
+  clave: string;
+}
+
+export { Post,User };

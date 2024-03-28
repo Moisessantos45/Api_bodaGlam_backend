@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "nameUser": "John Doe",
+    "email": "john@gmail.com",
+    "password": "123456789",
+    "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+    "token": "1234567890",
+    "clave": "1234567890"
+  },
+  {
+    "id": "2",
+    "nameUser": "juan perez",
+    "email": "juan@gmail.com",
+    "password": "123456789",
+    "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec",
+    "token": "1234567890",
+    "clave": "1234567890"
+  }
+]
