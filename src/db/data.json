@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "tipo": "Wedding",
+    "imagen": "/public/img/16.webp",
+    "descripcion": "Experience the wedding of your dreams with our personalized planning services. From venue selection to decor, we ensure every detail is perfect for your special day.",
+    "titulo": "Dreamy Nuptials",
+    "author": "by admin",
+    "fecha": "abril 9, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 2,
+    "tipo": "Engagement",
+    "imagen": "/public/img/2.webp",
+    "descripcion": "Celebrate the beginning of forever with our enchanting engagement packages. Let love blossom in the most romantic settings.",
+    "titulo": "Forever Together",
+    "author": "by admin",
+    "fecha": "marzo 26, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 3,
+    "tipo": "Wedding",
+    "imagen": "/public/img/3.webp",
+    "descripcion": "Say 'I do' surrounded by elegance and beauty. Create memories that last a lifetime with our bespoke wedding services.",
+    "titulo": "Eternal Vows",
+    "author": "by admin",
+    "fecha": "marzo 27, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 4,
+    "tipo": "Reception",
+    "imagen": "/public/img/4.webp",
+    "descripcion": "Toast to new beginnings and celebrate love in style. Our reception venues offer luxury and sophistication for your special day.",
+    "titulo": "Years of Bliss",
+    "author": "by admin",
+    "fecha": "marzo 28, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 5,
+    "tipo": "Style",
+    "imagen": "/public/img/5.webp",
+    "descripcion": "Discover the latest trends and unleash your inner beauty. Let our experts create a stunning look that reflects your unique style.",
+    "titulo": "Celebrating Life",
+    "author": "by admin",
+    "fecha": "marzo 29, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 6,
+    "tipo": "Photography",
+    "imagen": "/public/img/6.webp",
+    "descripcion": "Capture every precious moment with our professional photography services. Relive the magic of your special day through stunning visuals.",
+    "titulo": "New Beginnings",
+    "author": "by admin",
+    "fecha": "marzo 30, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 7,
+    "tipo": "Makeup",
+    "imagen": "/public/img/7.webp",
+    "descripcion": "Enhance your natural beauty and radiate confidence on your special day. Our makeup artists create flawless looks tailored to your unique features.",
+    "titulo": "Joyful Festivities",
+    "author": "by admin",
+    "fecha": "marzo 31, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 8,
+    "tipo": "Engagement",
+    "imagen": "/public/img/8.webp",
+    "descripcion": "Experience love like never before with our exclusive engagement packages. Let our team create a magical moment you'll cherish forever.",
+    "titulo": "Exciting News",
+    "author": "by admin",
+    "fecha": "abril 1, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 9,
+    "tipo": "Makeup",
+    "imagen": "/public/img/9.webp",
+    "descripcion": "Transform into the best version of yourself with our professional makeup services. Feel confident and beautiful on your special day.",
+    "titulo": "Moving Upwards",
+    "author": "by admin",
+    "fecha": "abril 2, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 10,
+    "tipo": "Photography",
+    "imagen": "/public/img/10.webp",
+    "descripcion": "Capture the essence of your love story with our creative photography services. Let every frame tell the tale of your romance.",
+    "titulo": "Goodbye, Friend",
+    "author": "by admin",
+    "fecha": "abril 3, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 11,
+    "tipo": "Reception",
+    "imagen": "/public/img/11.webp",
+    "descripcion": "Celebrate love in grandeur and elegance. Our reception venues provide the perfect backdrop for your unforgettable moments.",
+    "titulo": "Reaching Heights",
+    "author": "by admin",
+    "fecha": "abril 4, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 12,
+    "tipo": "Wedding",
+    "imagen": "/public/img/12.webp",
+    "descripcion": "Plan the wedding of your dreams with our personalized services. From intimate ceremonies to grand celebrations, we make every moment magical.",
+    "titulo": "Welcoming 2025",
+    "author": "by admin",
+    "fecha": "abril 5, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 13,
+    "tipo": "Style",
+    "imagen": "/public/img/13.webp",
+    "descripcion": "Transform your look and express your individuality with our personalized styling services. Stand out from the crowd with confidence and flair.",
+    "titulo": "Glamorous Makeover",
+    "author": "by admin",
+    "fecha": "abril 6, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 14,
+    "tipo": "Photography",
+    "imagen": "/public/img/14.webp",
+    "descripcion": "Capture the beauty of every moment with our professional photography services. Let our skilled photographers create memories that last a lifetime.",
+    "titulo": "Capturing Memories",
+    "author": "by admin",
+    "fecha": "abril 7, 2024",
+    "idUser": 1
+  },
+  {
+    "id": 15,
+    "tipo": "Reception",
+    "imagen": "/public/img/15.webp",
+    "descripcion": "Celebrate love and happiness in a setting of luxury and elegance. Our reception venues offer unmatched ambiance for your special day.",
+    "titulo": "Grand Celebration",
+    "author": "by admin",
+    "fecha": "abril 8, 2024",
+    "idUser": 1
+  }
+]
