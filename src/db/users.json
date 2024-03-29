@@ -15,6 +15,17 @@
     "password": "123456789",
     "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec",
     "token": "1234567890",
-    "clave": "1234567890"
+    "clave": "1234567890",
+    "active": false
+  },
+  {
+    "id": "106a1db5-c314-4fa6-ae70-7f37108540ce",
+    "password": "$2b$10$/8WHRGZNVWsZRNa1DSLN8.dvQ8aY1tOqHezFZx3WsZZbLPWf5TuNK",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwNmExZGI1LWMzMTQtNGZhNi1hZTcwLTdmMzcxMDg1NDBjZSIsImlhdCI6MTcxMTY5NDQ2OSwiZXhwIjoxNzEyNTU4NDY5fQ.EIvrbux3ShXR9brsFSPm4oOjDHsxw5toN852CbNqbEI",
+    "nameUser": "Moises",
+    "email": "moi@gmail.com",
+    "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec",
+    "clave": "moy45",
+    "active": true
   }
 ]

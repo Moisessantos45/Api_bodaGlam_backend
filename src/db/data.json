@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "8114108a-57d6-484c-b520-7181cc2e7432",
     "tipo": "Wedding",
     "imagen": "/public/img/16.webp",
     "descripcion": "Experience the wedding of your dreams with our personalized planning services. From venue selection to decor, we ensure every detail is perfect for your special day.",
@@ -10,9 +10,9 @@
     "idUser": 1
   },
   {
-    "id": 2,
+    "id": "1c248c79-65ae-4353-8f94-afe45ece2bb0",
     "tipo": "Engagement",
-    "imagen": "/public/img/2.webp",
+    "imagen": "./public/img/boda2.jpeg",
     "descripcion": "Celebrate the beginning of forever with our enchanting engagement packages. Let love blossom in the most romantic settings.",
     "titulo": "Forever Together",
     "author": "by admin",
@@ -20,17 +20,17 @@
     "idUser": 1
   },
   {
-    "id": 3,
+    "id": "187c38ee-76d1-498a-ae59-4df33ab75830",
     "tipo": "Wedding",
     "imagen": "/public/img/3.webp",
     "descripcion": "Say 'I do' surrounded by elegance and beauty. Create memories that last a lifetime with our bespoke wedding services.",
     "titulo": "Eternal Vows",
     "author": "by admin",
     "fecha": "marzo 27, 2024",
-    "idUser": 1
+    "idUser": "106a1db5-c314-4fa6-ae70-7f37108540ce"
   },
   {
-    "id": 4,
+    "id": "b964bf13-0021-439f-98eb-5ce252cca497",
     "tipo": "Reception",
     "imagen": "/public/img/4.webp",
     "descripcion": "Toast to new beginnings and celebrate love in style. Our reception venues offer luxury and sophistication for your special day.",
@@ -40,17 +40,17 @@
     "idUser": 1
   },
   {
-    "id": 5,
+    "id": "18c93f76-ea42-425a-b8f3-3550b9857461",
     "tipo": "Style",
     "imagen": "/public/img/5.webp",
     "descripcion": "Discover the latest trends and unleash your inner beauty. Let our experts create a stunning look that reflects your unique style.",
     "titulo": "Celebrating Life",
     "author": "by admin",
     "fecha": "marzo 29, 2024",
-    "idUser": 1
+    "idUser": "106a1db5-c314-4fa6-ae70-7f37108540ce"
   },
   {
-    "id": 6,
+    "id": "d0b90022-ba6d-4d98-9a94-2afac8bd6b50",
     "tipo": "Photography",
     "imagen": "/public/img/6.webp",
     "descripcion": "Capture every precious moment with our professional photography services. Relive the magic of your special day through stunning visuals.",
@@ -60,7 +60,7 @@
     "idUser": 1
   },
   {
-    "id": 7,
+    "id": "2dc06b71-85e4-49b3-b5ba-463bd324ef66",
     "tipo": "Makeup",
     "imagen": "/public/img/7.webp",
     "descripcion": "Enhance your natural beauty and radiate confidence on your special day. Our makeup artists create flawless looks tailored to your unique features.",
@@ -70,7 +70,7 @@
     "idUser": 1
   },
   {
-    "id": 8,
+    "id": "c97fc766-dbee-4267-84b2-3203b114b25e",
     "tipo": "Engagement",
     "imagen": "/public/img/8.webp",
     "descripcion": "Experience love like never before with our exclusive engagement packages. Let our team create a magical moment you'll cherish forever.",
@@ -80,7 +80,7 @@
     "idUser": 1
   },
   {
-    "id": 9,
+    "id": "83433f28-3b90-47e4-be9c-c5ecb71d6036",
     "tipo": "Makeup",
     "imagen": "/public/img/9.webp",
     "descripcion": "Transform into the best version of yourself with our professional makeup services. Feel confident and beautiful on your special day.",
@@ -90,17 +90,17 @@
     "idUser": 1
   },
   {
-    "id": 10,
+    "id": "9c1b31ca-2f2b-42a0-ab1d-84e106422dbd",
     "tipo": "Photography",
     "imagen": "/public/img/10.webp",
     "descripcion": "Capture the essence of your love story with our creative photography services. Let every frame tell the tale of your romance.",
     "titulo": "Goodbye, Friend",
     "author": "by admin",
     "fecha": "abril 3, 2024",
-    "idUser": 1
+    "idUser": "106a1db5-c314-4fa6-ae70-7f37108540ce"
   },
   {
-    "id": 11,
+    "id": "91564222-e953-424d-ac58-818ae3971d64",
     "tipo": "Reception",
     "imagen": "/public/img/11.webp",
     "descripcion": "Celebrate love in grandeur and elegance. Our reception venues provide the perfect backdrop for your unforgettable moments.",
@@ -110,7 +110,7 @@
     "idUser": 1
   },
   {
-    "id": 12,
+    "id": "44b5aa24-8242-43a6-8e87-1fa1ac406c4f",
     "tipo": "Wedding",
     "imagen": "/public/img/12.webp",
     "descripcion": "Plan the wedding of your dreams with our personalized services. From intimate ceremonies to grand celebrations, we make every moment magical.",
@@ -120,7 +120,7 @@
     "idUser": 1
   },
   {
-    "id": 13,
+    "id": "312268d4-d082-4e59-b98f-a2ea95c560a9",
     "tipo": "Style",
     "imagen": "/public/img/13.webp",
     "descripcion": "Transform your look and express your individuality with our personalized styling services. Stand out from the crowd with confidence and flair.",
@@ -130,7 +130,7 @@
     "idUser": 1
   },
   {
-    "id": 14,
+    "id": "0b8ed576-74ae-4371-9331-c33a0f0cefe6",
     "tipo": "Photography",
     "imagen": "/public/img/14.webp",
     "descripcion": "Capture the beauty of every moment with our professional photography services. Let our skilled photographers create memories that last a lifetime.",
@@ -140,7 +140,7 @@
     "idUser": 1
   },
   {
-    "id": 15,
+    "id": "31e3cdbd-e397-4bbb-b215-375fa794d13e",
     "tipo": "Reception",
     "imagen": "/public/img/15.webp",
     "descripcion": "Celebrate love and happiness in a setting of luxury and elegance. Our reception venues offer unmatched ambiance for your special day.",

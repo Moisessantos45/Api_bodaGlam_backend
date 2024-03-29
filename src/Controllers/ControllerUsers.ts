@@ -10,6 +10,7 @@ import {
 import { sendErrors } from "../Err/Errors";
 import { User } from "../Types/types";
 import { v4 as uuidv4 } from "uuid";
+import { comparePassword, encrypPassword } from "../Helper/EncrypPassword";
 
 const getPath = () => {
   const rootDir = getRootDir();
@@ -49,14 +50,20 @@ const loginUserAutheticate = async (req: Request, res: Response) => {
   try {
     const getUserData: User[] = await getDataConvert(getPath());
     const existsUser: User | undefined = getUserData.find(
-      (item) => item.email === email && item.password === password
+      (item) => item.email === email
     );
     if (existsUser === undefined) {
       res.status(401).json({ message: "User not found" });
       return;
     }
+    const existsPassword = await comparePassword(password, existsUser.password);
+    if (!existsPassword) {
+      res.status(401).json({ msg: "Invalid password" });
+      return;
+    }
+
     const token = generteJwt(existsUser.id);
-    const newUser: User = { ...existsUser, token };
+    const newUser: User = { ...existsUser, token, active: true };
     const newUserData = getUserData.map((item) =>
       item.id === newUser.id ? newUser : item
     );
@@ -81,15 +88,16 @@ const registerUser = async (req: Request, res: Response) => {
       res.status(401).json({ message: "User already exists" });
       return;
     }
-    const { password: pass, ...rest } = req.body;
+    const { password: _, ...rest } = req.body;
+    const passwordHas = await encrypPassword(password);
     const id = uuidv4();
     const token = "";
-    const clave = "";
+    const active = false;
     const newUser: User = {
       id,
-      password,
+      password: passwordHas,
       token,
-      clave,
+      active,
       ...rest,
     };
     getUserData.push(newUser);
@@ -107,17 +115,39 @@ const registerUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const getUserData: User[] = await getDataConvert(getPath());
-    const existsUser = getUserData.find((item) => item.id === id);
+    const getUserData = await getDataConvert(getPath());
+    const existsUser = getUserData.find((item: User) => item.id === id);
     if (existsUser === undefined) {
-      res.status(401).json({ message: "User not found" });
+      res.status(401).json({ msg: "User not found" });
       return;
     }
-    const newUser = getUserData.map((item) =>
-      item.id === id ? { ...item, ...req.body } : item
+
+    const dataUserReq = req.body;
+    let verifyUpdate: boolean = false;
+    for (const key in dataUserReq) {
+      if (dataUserReq[key] !== existsUser[key]) {
+        verifyUpdate = true;
+        if (key === "password") {
+          if (dataUserReq[key].trim() !== "") {
+            const passwordHas = await encrypPassword(dataUserReq[key]);
+            existsUser[key] = passwordHas;
+          }
+        } else if (key === "active") {
+          existsUser[key] = JSON.parse(dataUserReq[key]);
+        } else {
+          existsUser[key] = dataUserReq[key];
+        }
+      }
+    }
+    if (!verifyUpdate) {
+      res.status(200).json({ msg: "There were no updated data" });
+      return;
+    }
+    const newDataPost: User[] = getUserData.map((item: User) =>
+      item.id === id ? existsUser : item
     );
 
-    fs.writeFileSync(getPath(), JSON.stringify(newUser, null, 2));
+    fs.writeFileSync(getPath(), JSON.stringify(newDataPost, null, 2));
     res.status(200).json({ msg: "User updated successfully" });
   } catch (error) {
     if (error instanceof Error) {
@@ -158,11 +188,11 @@ const logoutUser = async (req: Request, res: Response) => {
       (item) => item.id === id && item.email === email
     );
     if (existsUser === undefined) {
-      res.status(401).json({ message: "User not found" });
+      res.status(401).json({ msg: "User not found" });
       return;
     }
     const newUser = getUserData.map((item) =>
-      item.id === id ? { ...item, token: "" } : item
+      item.id === id ? { ...item, token: "", active: false } : item
     );
     fs.writeFileSync(getPath(), JSON.stringify(newUser, null, 2));
     res.status(200).json({ msg: "User logout successfully" });

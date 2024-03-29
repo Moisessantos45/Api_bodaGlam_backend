@@ -5,6 +5,16 @@ import { Post, User } from "../Types/types";
 const meses: { [key: number]: string } = {
   1: "enero",
   2: "febrero",
+  3: "marzo",
+  4: "abril",
+  5: "mayo",
+  6: "junio",
+  7: "julio",
+  8: "agosto",
+  9: "septiembre",
+  10: "octubre",
+  11: "noviembre",
+  12: "diciembre",
 };
 
 const genertaDate = (): string => {
@@ -34,10 +44,10 @@ const getDataConvert = (ruta: string) => {
 
 const getVerifyExistsData = async (id: string, ruta: string) => {
   const getData = await getDataConvert(ruta);
-  const verifyFilterPostById = getData.filter(
+  const verifyFilterPostById = getData.find(
     (item: Post | User) => item.id === id
   );
-  if (verifyFilterPostById.length === 0) {
+  if (verifyFilterPostById === undefined) {
     throw new Error("Data not found");
   }
   return verifyFilterPostById;

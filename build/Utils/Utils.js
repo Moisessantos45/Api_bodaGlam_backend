@@ -18,6 +18,16 @@ const fs_1 = __importDefault(require("fs"));
 const meses = {
     1: "enero",
     2: "febrero",
+    3: "marzo",
+    4: "abril",
+    5: "mayo",
+    6: "junio",
+    7: "julio",
+    8: "agosto",
+    9: "septiembre",
+    10: "octubre",
+    11: "noviembre",
+    12: "diciembre",
 };
 const genertaDate = () => {
     const date = new Date();
@@ -45,10 +55,10 @@ const getDataConvert = (ruta) => {
 };
 exports.getDataConvert = getDataConvert;
 const getVerifyExistsData = (id, ruta) => __awaiter(void 0, void 0, void 0, function* () {
-    const getDataPost = yield getDataConvert(ruta);
-    const verifyFilterPostById = getDataPost.filter((item) => item.id === id);
-    if (verifyFilterPostById.length === 0) {
-        throw new Error("Post not found");
+    const getData = yield getDataConvert(ruta);
+    const verifyFilterPostById = getData.find((item) => item.id === id);
+    if (verifyFilterPostById === undefined) {
+        throw new Error("Data not found");
     }
     return verifyFilterPostById;
 });

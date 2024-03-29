@@ -1,12 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const ControllerUsers_1 = require("../Controllers/ControllerUsers");
+const authSesion_1 = __importDefault(require("../Middleware/authSesion"));
 const router = (0, express_1.Router)();
-router.get("/");
-router.post("/login");
-router.post("/register");
-router.get("/user/:id");
-router.put("/updateUser/:id");
-router.delete("/deleteUser/:id");
-router.post("logout");
+router.get("/", ControllerUsers_1.getUsers);
+router.post("/login", ControllerUsers_1.loginUserAutheticate);
+router.post("/register", ControllerUsers_1.registerUser);
+router.get("/user/:id", ControllerUsers_1.getUserById);
+router.put("/updateUser/:id", authSesion_1.default, ControllerUsers_1.updateUser);
+router.delete("/deleteUser/:id", authSesion_1.default, ControllerUsers_1.deleteUser);
+router.post("/logout/:id", authSesion_1.default, ControllerUsers_1.logoutUser);
 exports.default = router;

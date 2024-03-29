@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePost = exports.updatePost = exports.postPost = exports.getPostById = exports.getPost = void 0;
+exports.deletePost = exports.updatePost = exports.postPost = exports.getPostByIdUser = exports.getPostById = exports.getPost = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const Utils_1 = require("../Utils/Utils");
@@ -58,6 +58,27 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getPostById = getPostById;
+const getPostByIdUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { idUser } = req.params;
+    try {
+        if (!fs_1.default.existsSync(getPath())) {
+            res.status(404).json({ msg: "Post not found" });
+            return;
+        }
+        const getDataPost = yield (0, Utils_1.getDataConvert)(getPath());
+        const filterPostByIdUser = getDataPost.filter((item) => item.idUser === idUser);
+        res.status(200).json(filterPostByIdUser);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            (0, Errors_1.sendErrors)(res, error.message, 501);
+        }
+        else {
+            (0, Errors_1.sendErrors)(res, "An unexpected error occurred", 501);
+        }
+    }
+});
+exports.getPostByIdUser = getPostByIdUser;
 const postPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!fs_1.default.existsSync(getPath())) {
@@ -65,6 +86,7 @@ const postPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const getDataPost = yield (0, Utils_1.getDataConvert)(getPath());
         req.body.id = (0, uuid_1.v4)();
+        req.body.fecha = (0, Utils_1.genertaDate)();
         getDataPost.push(req.body);
         fs_1.default.writeFileSync(getPath(), JSON.stringify(getDataPost, null, 2));
         res.status(201).json({ msg: "Post created" });
@@ -82,9 +104,21 @@ exports.postPost = postPost;
 const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const getDataPost = yield (0, Utils_1.getDataConvert)(getPath());
-        yield (0, Utils_1.getVerifyExistsData)(id, getPath());
-        const updatedPostById = getDataPost.map((item) => item.id === id ? Object.assign(Object.assign({}, item), req.body) : item);
+        const existsPost = yield (0, Utils_1.getVerifyExistsData)(id, getPath());
+        const updatedPost = yield (0, Utils_1.getDataConvert)(getPath());
+        let verifyUpdate = false;
+        const dataPostReq = req.body;
+        for (const key in dataPostReq) {
+            if (dataPostReq[key] !== existsPost[key]) {
+                verifyUpdate = true;
+                existsPost[key] = dataPostReq[key];
+            }
+        }
+        if (!verifyUpdate) {
+            res.status(200).json({ msg: "There were no updated data" });
+            return;
+        }
+        const updatedPostById = updatedPost.map((item) => item.id === id ? existsPost : item);
         fs_1.default.writeFileSync(getPath(), JSON.stringify(updatedPostById, null, 2));
         res.status(200).json({ msg: "Post updated" });
     }
@@ -101,8 +135,8 @@ exports.updatePost = updatePost;
 const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const getDataPost = yield (0, Utils_1.getDataConvert)(getPath());
         yield (0, Utils_1.getVerifyExistsData)(id, getPath());
+        const getDataPost = yield (0, Utils_1.getDataConvert)(getPath());
         const newDataPost = getDataPost.filter((item) => item.id !== id);
         fs_1.default.writeFileSync(getPath(), JSON.stringify(newDataPost, null, 2));
         res.status(200).json({ msg: "Post deleted" });

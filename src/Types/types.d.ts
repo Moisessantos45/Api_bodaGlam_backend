@@ -17,6 +17,7 @@ interface User {
   avatar: string;
   token: string;
   clave: string;
+  active:boolean
 }
 
 export { Post,User };
