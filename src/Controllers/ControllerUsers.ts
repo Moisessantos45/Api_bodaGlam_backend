@@ -1,26 +1,24 @@
 import fs from "fs";
-import path from "path";
 import { Request, Response } from "express";
 import generteJwt from "../Helper/GenerateJwt";
-import {
-  getDataConvert,
-  getRootDir,
-  getVerifyExistsData,
-} from "../Utils/Utils";
+import { getPath, getDataConvert, getVerifyExistsData } from "../Utils/Utils";
 import { sendErrors } from "../Err/Errors";
-import { User } from "../Types/types";
+import { Post, TypesJwt, User } from "../Types/types";
 import { v4 as uuidv4 } from "uuid";
+import Jwt from "jsonwebtoken";
 import { comparePassword, encrypPassword } from "../Helper/EncrypPassword";
 
-const getPath = () => {
-  const rootDir = getRootDir();
-  const pathJson = path.join(rootDir, "db", "users.json");
-  return pathJson;
-};
+// const getPath = () => {
+//   const rootDir = getRootDir();
+//   const pathJson = path.join(rootDir, "db", "users.json");
+//   return pathJson;
+// };
+
+const pathFile = "users";
 
 const getUsers = async (_req: Request, res: Response) => {
   try {
-    const getUsersData = await getDataConvert(getPath());
+    const getUsersData = await getDataConvert(getPath(pathFile));
     res.status(202).json(getUsersData);
   } catch (error) {
     if (error instanceof Error) {
@@ -32,10 +30,29 @@ const getUsers = async (_req: Request, res: Response) => {
 };
 
 const getUserById = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const authHeader = req.headers?.authorization;
+  let token = authHeader && authHeader.split(" ")[1];
+  token ??= "";
+  if (!token) {
+    res.status(400).json({ msg: "No se ha enviado el token" });
+    return;
+  }
   try {
-    const getUserByIdData = await getVerifyExistsData(id, getPath());
-    res.status(200).json(getUserByIdData);
+    const decoded: TypesJwt = (await Jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    )) as TypesJwt;
+    const idToken = decoded.id;
+
+    const getUserByIdData = await getVerifyExistsData(
+      idToken,
+      getPath(pathFile)
+    );
+    const getDataPost: Post[] = await getDataConvert(getPath("data"));
+    const filterPostByIdUser = getDataPost.filter(
+      (item) => item.idUser === idToken
+    );
+    res.status(200).json({ getUserByIdData, filterPostByIdUser });
   } catch (error) {
     if (error instanceof Error) {
       sendErrors(res, error.message, 501);
@@ -48,7 +65,7 @@ const getUserById = async (req: Request, res: Response) => {
 const loginUserAutheticate = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
-    const getUserData: User[] = await getDataConvert(getPath());
+    const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser: User | undefined = getUserData.find(
       (item) => item.email === email
     );
@@ -67,7 +84,7 @@ const loginUserAutheticate = async (req: Request, res: Response) => {
     const newUserData = getUserData.map((item) =>
       item.id === newUser.id ? newUser : item
     );
-    fs.writeFileSync(getPath(), JSON.stringify(newUserData, null, 2));
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newUserData, null, 2));
     const { password: omitPassword, ...rest } = newUser;
     res.status(200).json(rest);
   } catch (error) {
@@ -82,7 +99,7 @@ const loginUserAutheticate = async (req: Request, res: Response) => {
 const registerUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
-    const getUserData: User[] = await getDataConvert(getPath());
+    const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find((item) => item.email === email);
     if (existsUser !== undefined) {
       res.status(401).json({ message: "User already exists" });
@@ -101,7 +118,7 @@ const registerUser = async (req: Request, res: Response) => {
       ...rest,
     };
     getUserData.push(newUser);
-    fs.writeFileSync(getPath(), JSON.stringify(getUserData, null, 2));
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(getUserData, null, 2));
     res.status(201).json({ msg: "User created successfully" });
   } catch (error) {
     if (error instanceof Error) {
@@ -115,7 +132,7 @@ const registerUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const getUserData = await getDataConvert(getPath());
+    const getUserData = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find((item: User) => item.id === id);
     if (existsUser === undefined) {
       res.status(401).json({ msg: "User not found" });
@@ -147,7 +164,7 @@ const updateUser = async (req: Request, res: Response) => {
       item.id === id ? existsUser : item
     );
 
-    fs.writeFileSync(getPath(), JSON.stringify(newDataPost, null, 2));
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newDataPost, null, 2));
     res.status(200).json({ msg: "User updated successfully" });
   } catch (error) {
     if (error instanceof Error) {
@@ -161,14 +178,14 @@ const updateUser = async (req: Request, res: Response) => {
 const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const getUserData: User[] = await getDataConvert(getPath());
+    const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find((item) => item.id === id);
     if (existsUser === undefined) {
       res.status(401).json({ message: "User not found" });
       return;
     }
     const newUser = getUserData.filter((item) => item.id !== id);
-    fs.writeFileSync(getPath(), JSON.stringify(newUser, null, 2));
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newUser, null, 2));
     res.status(200).json({ msg: "User deleted successfully" });
   } catch (error) {
     if (error instanceof Error) {
@@ -181,9 +198,9 @@ const deleteUser = async (req: Request, res: Response) => {
 
 const logoutUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { email } = req.body;
+  const email = req.query.email as string;
   try {
-    const getUserData: User[] = await getDataConvert(getPath());
+    const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find(
       (item) => item.id === id && item.email === email
     );
@@ -194,7 +211,7 @@ const logoutUser = async (req: Request, res: Response) => {
     const newUser = getUserData.map((item) =>
       item.id === id ? { ...item, token: "", active: false } : item
     );
-    fs.writeFileSync(getPath(), JSON.stringify(newUser, null, 2));
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newUser, null, 2));
     res.status(200).json({ msg: "User logout successfully" });
   } catch (error) {
     if (error instanceof Error) {

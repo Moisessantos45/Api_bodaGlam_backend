@@ -34,6 +34,12 @@ const getRootDir = () => {
     : rootDirDev;
 };
 
+const getPath = (file: string) => {
+  const rootDir = getRootDir();
+  const pathJson = path.join(rootDir, "db", `${file}.json`);
+  return pathJson;
+};
+
 const getDataConvert = (ruta: string) => {
   if (!fs.existsSync(ruta)) {
     return [];
@@ -53,4 +59,10 @@ const getVerifyExistsData = async (id: string, ruta: string) => {
   return verifyFilterPostById;
 };
 
-export { genertaDate, getRootDir, getDataConvert, getVerifyExistsData };
+export {
+  getPath,
+  genertaDate,
+  getRootDir,
+  getDataConvert,
+  getVerifyExistsData,
+};

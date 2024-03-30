@@ -7,6 +7,7 @@ interface Post {
   author: string;
   fecha: string;
   idUser: string;
+  status: boolean;
 }
 
 interface User {
@@ -20,4 +21,11 @@ interface User {
   active:boolean
 }
 
-export { Post,User };
+interface TypesJwt {
+  id: string;
+  iat: number;
+  exp: number;
+}
+
+
+export { Post,User,TypesJwt };
