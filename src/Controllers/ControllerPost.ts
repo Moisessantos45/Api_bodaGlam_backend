@@ -54,11 +54,9 @@ const getPostById = async (req: Request, res: Response) => {
 };
 
 const getPostByIdUser = async (req: Request, res: Response) => {
-  console.log(process.env.JWT_SECRET_KEY);
   const authHeader = req.headers?.authorization;
   let token = authHeader && authHeader.split(" ")[1];
   token ??= "";
-  console.log(token);
   if (!token) {
     res.status(400).json({ msg: "No se ha enviado el token" });
     return;
@@ -93,11 +91,18 @@ const postPost = async (req: Request, res: Response) => {
       fs.writeFileSync(getPath(pathFile), JSON.stringify([], null, 2));
     }
     const getDataPost: Post[] = await getDataConvert(getPath(pathFile));
+    const verifyDataPost = getDataPost.find(
+      (item) => item.titulo === req.body.titulo && item.tipo === req.body.tipo
+    );
+    if (verifyDataPost !== undefined) {
+      res.status(400).json({ msg: "Post already exists" });
+      return;
+    }
     req.body.id = uuidv4();
     req.body.fecha = genertaDate();
     getDataPost.push(req.body);
     fs.writeFileSync(getPath(pathFile), JSON.stringify(getDataPost, null, 2));
-    res.status(201).json({ msg: "Post created" });
+    res.status(201).json(req.body);
   } catch (error) {
     if (error instanceof Error) {
       sendErrors(res, error.message, 501);
@@ -132,7 +137,30 @@ const updatePost = async (req: Request, res: Response) => {
       getPath(pathFile),
       JSON.stringify(updatedPostById, null, 2)
     );
-    res.status(200).json({ msg: "Post updated" });
+    res.status(200).json(existsPost);
+  } catch (error) {
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
+  }
+};
+
+const changeStatusPost = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const updatedPost: Post[] = await getDataConvert(getPath(pathFile));
+    const existsPost = updatedPost.find((item) => item.id === id);
+    if (existsPost === undefined) {
+      res.status(401).json({ msg: "Post not found" });
+      return;
+    }
+    const newPostUpdate = updatedPost.map((item) =>
+      item.id === id ? { ...item, status: !item.status } : item
+    );
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newPostUpdate, null, 2));
+    res.status(200).json({ msg: "Status updated" });
   } catch (error) {
     if (error instanceof Error) {
       sendErrors(res, error.message, 501);
@@ -165,5 +193,6 @@ export {
   getPostByIdUser,
   postPost,
   updatePost,
+  changeStatusPost,
   deletePost,
 };

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getVerifyExistsData = exports.getDataConvert = exports.getRootDir = exports.genertaDate = void 0;
+exports.getVerifyExistsData = exports.getDataConvert = exports.getRootDir = exports.genertaDate = exports.getPath = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const meses = {
@@ -46,6 +46,12 @@ const getRootDir = () => {
         : rootDirDev;
 };
 exports.getRootDir = getRootDir;
+const getPath = (file) => {
+    const rootDir = getRootDir();
+    const pathJson = path_1.default.join(rootDir, "db", `${file}.json`);
+    return pathJson;
+};
+exports.getPath = getPath;
 const getDataConvert = (ruta) => {
     if (!fs_1.default.existsSync(ruta)) {
         return [];

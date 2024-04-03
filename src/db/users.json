@@ -1,14 +1,5 @@
 [
   {
-    "id": "1",
-    "nameUser": "John Doe",
-    "email": "john@gmail.com",
-    "password": "123456789",
-    "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
-    "token": "1234567890",
-    "clave": "1234567890"
-  },
-  {
     "id": "2",
     "nameUser": "juan perez",
     "email": "juan@gmail.com",
@@ -22,10 +13,18 @@
     "id": "106a1db5-c314-4fa6-ae70-7f37108540ce",
     "password": "$2b$10$/8WHRGZNVWsZRNa1DSLN8.dvQ8aY1tOqHezFZx3WsZZbLPWf5TuNK",
     "token": "",
-    "nameUser": "Moises",
+    "nameUser": "Moises santos",
     "email": "moi@gmail.com",
-    "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec",
-    "clave": "moy45",
-    "active": true
+    "avatar": "https://res.cloudinary.com/dtkskpitc/image/upload/v1711944441/bg_perfil/g6g4g7yndm0hadbdlnew.png",
+    "active": false
+  },
+  {
+    "id": "69e76208-c1a1-4e13-996a-53bfb3fd02d1",
+    "password": "$2b$10$H784AKhJnCgm8C19/Wk09.wOiUT3F5NpjFNlB9l8yuC9h1u37duVG",
+    "token": "",
+    "active": false,
+    "nameUser": "moy55",
+    "email": "moy55@gmail.com",
+    "avatar": "https://res.cloudinary.com/dtkskpitc/image/upload/v1711868801/bg_perfil/grgzijhf7minwsmrndfd.jpg"
   }
 ]

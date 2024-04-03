@@ -10,7 +10,7 @@ const authSesion = (req, res, next) => {
         req.headers.authorization.startsWith("Bearer")) {
         try {
             token = req.headers.authorization.split(" ")[1];
-            jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY);
+            jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET_KEY);
             return next();
         }
         catch (error) {

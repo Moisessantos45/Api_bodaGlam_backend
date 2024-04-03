@@ -70,7 +70,7 @@ const loginUserAutheticate = async (req: Request, res: Response) => {
       (item) => item.email === email
     );
     if (existsUser === undefined) {
-      res.status(401).json({ message: "User not found" });
+      res.status(401).json({ msg: "User not found" });
       return;
     }
     const existsPassword = await comparePassword(password, existsUser.password);
@@ -102,7 +102,7 @@ const registerUser = async (req: Request, res: Response) => {
     const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find((item) => item.email === email);
     if (existsUser !== undefined) {
-      res.status(401).json({ message: "User already exists" });
+      res.status(401).json({ msg: "User already exists" });
       return;
     }
     const { password: _, ...rest } = req.body;
@@ -165,7 +165,72 @@ const updateUser = async (req: Request, res: Response) => {
     );
 
     fs.writeFileSync(getPath(pathFile), JSON.stringify(newDataPost, null, 2));
-    res.status(200).json({ msg: "User updated successfully" });
+    res.status(200).json(existsUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
+  }
+};
+
+const retrievePassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    const getUserData: User[] = await getDataConvert(getPath(pathFile));
+    const existsUser = getUserData.find((item) => item.email === email);
+    if (existsUser === undefined) {
+      res.status(401).json({ msg: "User not found" });
+      return;
+    }
+    const token = generteJwt(existsUser.id);
+    const newUser = getUserData.map((item) =>
+      item.id === existsUser.id ? { ...existsUser, token } : item
+    );
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newUser, null, 2));
+    res.status(200).json(token);
+  } catch (error) {
+    if (error instanceof Error) {
+      sendErrors(res, error.message, 501);
+    } else {
+      sendErrors(res, "An unexpected error occurred", 501);
+    }
+  }
+};
+
+const changePassword = async (req: Request, res: Response) => {
+  const { password } = req.body;
+  const authHeader = req.headers?.authorization;
+  let token = authHeader && authHeader.split(" ")[1];
+  token ??= "";
+  if (!token) {
+    res.status(400).json({ msg: "No se ha enviado el token" });
+    return;
+  }
+  try {
+    const decoded: TypesJwt = (await Jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    )) as TypesJwt;
+    const id = decoded.id;
+
+    const getUserData: User[] = await getDataConvert(getPath(pathFile));
+    const existsUser = getUserData.find(
+      (item) => item.id === id && item.token === token
+    );
+    if (existsUser === undefined) {
+      res.status(401).json({ msg: "User not found" });
+      return;
+    }
+    const newPasssword = await encrypPassword(password);
+    const newUser = getUserData.map((item) =>
+      item.id === existsUser.id
+        ? { ...existsUser, token: "", password: newPasssword }
+        : item
+    );
+    fs.writeFileSync(getPath(pathFile), JSON.stringify(newUser, null, 2));
+    res.status(200).json({ msg: "Change password successfully" });
   } catch (error) {
     if (error instanceof Error) {
       sendErrors(res, error.message, 501);
@@ -177,7 +242,23 @@ const updateUser = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const authHeader = req.headers?.authorization;
+  let token = authHeader && authHeader.split(" ")[1];
+  token ??= "";
+  if (!token) {
+    res.status(400).json({ msg: "No se ha enviado el token" });
+    return;
+  }
   try {
+    const decoded: TypesJwt = (await Jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    )) as TypesJwt;
+    const idToken = decoded.id;
+    if (idToken !== id) {
+      res.status(401).json({ msg: "User not found" });
+      return;
+    }
     const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find((item) => item.id === id);
     if (existsUser === undefined) {
@@ -197,9 +278,20 @@ const deleteUser = async (req: Request, res: Response) => {
 };
 
 const logoutUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
   const email = req.query.email as string;
+  const authHeader = req.headers?.authorization;
+  let token = authHeader && authHeader.split(" ")[1];
+  token ??= "";
+  if (!token) {
+    res.status(400).json({ msg: "No se ha enviado el token" });
+    return;
+  }
   try {
+    const decoded: TypesJwt = (await Jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    )) as TypesJwt;
+    const id = decoded.id;
     const getUserData: User[] = await getDataConvert(getPath(pathFile));
     const existsUser = getUserData.find(
       (item) => item.id === id && item.email === email
@@ -228,6 +320,8 @@ export {
   loginUserAutheticate,
   registerUser,
   updateUser,
+  retrievePassword,
+  changePassword,
   deleteUser,
   logoutUser,
 };

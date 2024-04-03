@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  changeStatusPost,
   deletePost,
   getPost,
   getPostById,
@@ -16,6 +17,7 @@ router.get("/:id", getPostById);
 router.get("/post_user", authSesion, getPostByIdUser);
 router.post("/", authSesion, postPost);
 router.put("/:id", authSesion, updatePost);
+router.patch("/:id", authSesion, changeStatusPost);
 router.delete("/:id", authSesion, deletePost);
 
 export default router;
